@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "esnext", // Versão do JavaScript gerada
+    "module": "nodenext", // Usa módulos ESM compatíveis com o Node.js
+    "moduleResolution": "nodenext", // Resolve módulos seguindo as regras do NodeNext
+    "moduleDetection": "force", // Trata todos os arquivos como módulos
+    "lib": ["ESNext"], // APIs disponíveis durante a compilação
+    "strict": true, // Habilita todas as verificações estritas do TypeScript
+    "outDir": "./dist", // Diretório de saída dos arquivos compilados
+    "rootDir": "./src", // Diretório raiz do código-fonte
+    "esModuleInterop": true, // Melhor interoperabilidade com módulos CommonJS
+    "skipLibCheck": true, // Ignora a verificação de tipos dos arquivos .d.ts
+    "types": ["node"], // Inclui os tipos do Node.js
+    "paths": {
+      "@/*": ["./src/*"] // Alias para importar arquivos da pasta src
+    }
+  },
+  "include": ["src"], // Arquivos que serão compilados
+  "exclude": ["node_modules"] // Arquivos ignorados pela compilação
+}

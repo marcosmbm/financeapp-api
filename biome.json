@@ -1,0 +1,40 @@
+{
+  "files": {
+    "includes": [
+      "**",
+      "!node_modules",
+      "!.next",
+      "!dist",
+      "!build",
+      "!commitlintconfig.js"
+    ]
+  },
+  "linter": {
+    "includes": ["**", "!test/**"],
+    "rules": {
+      "nursery": {
+        "useSortedClasses": "error"
+      },
+      "style": {
+        "noNonNullAssertion": "off"
+      },
+      "correctness": {
+        "useParseIntRadix": "off"
+      }
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": { "source": { "organizeImports": "on" } }
+  },
+  "formatter": {
+    "lineWidth": 90,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  }
+}

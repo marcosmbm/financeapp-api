@@ -1,0 +1,50 @@
+{
+  "name": "financeapp-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo teste",
+    "dev": "tsx watch -r tsconfig-paths/register src/index.ts",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "start": "node -r module-alias/register dist/index.js",
+    "prepare": "husky",
+    "migrations:run": "tsx -r tsconfig-paths/register src/db/postgres/migrations/exec.ts"
+  },
+  "_moduleAliases": {
+    "@": "dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^18.0.5",
+    "module-alias": "^2.3.4",
+    "pg": "^8.23.1",
+    "rimraf": "^6.1.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@types/node": "^26.6.4",
+    "@types/pg": "^8.23.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "lint-staged": {
+    "*.{js,ts,json}": [
+      "npx biome check --write"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
+}
