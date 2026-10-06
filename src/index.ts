@@ -1,14 +1,22 @@
 import "dotenv/config";
 
-import { postgresHelper } from "./db/postgres/helper";
+import cors from "cors";
+import express, { Router } from "express";
+import { env } from "./config";
 
-interface Result {
-  result: number;
-}
+const app = express();
+const port = env.API_PORT;
 
-async function main() {
-  const result = await postgresHelper<Result>("SELECT 1 + 1 as result", []);
-  console.log(result[0].result);
-}
+const router = Router();
 
-main();
+router.get("/", (_req, res) => {
+  return res.json({ message: "Connected" });
+});
+
+app.use(express.json());
+app.use(cors());
+app.use(router);
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
