@@ -1,5 +1,4 @@
-import crypto from "node:crypto";
-import type { IPasswordHasherAdapter } from "@/adapters";
+import type { IIdGeneratorAdapter, IPasswordHasherAdapter } from "@/adapters";
 import type { ICreateUserRepository, IGetUserByEmailRepository } from "@/repositories";
 
 export interface ICreateUserUseCaseInput {
@@ -24,15 +23,18 @@ export class CreateUserUseCase implements ICreateUserUseCase {
   private readonly createUserRepository: ICreateUserRepository;
   private readonly getUserByEmailRepository: IGetUserByEmailRepository;
   private readonly passwordHasherAdapter: IPasswordHasherAdapter;
+  private readonly idGeneratorAdapter: IIdGeneratorAdapter;
 
   constructor(
     createUserRepository: ICreateUserRepository,
     getUserByEmailRepository: IGetUserByEmailRepository,
     passwordHasherAdapter: IPasswordHasherAdapter,
+    idGeneratorAdapter: IIdGeneratorAdapter,
   ) {
     this.createUserRepository = createUserRepository;
     this.getUserByEmailRepository = getUserByEmailRepository;
     this.passwordHasherAdapter = passwordHasherAdapter;
+    this.idGeneratorAdapter = idGeneratorAdapter;
   }
 
   async execute(data: ICreateUserUseCaseInput): Promise<ICreateUserUseCaseOutput> {
@@ -44,7 +46,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
       throw new Error(`this email ${data.email} is already in use`);
     }
 
-    const userId = crypto.randomUUID();
+    const userId = this.idGeneratorAdapter.execute();
 
     const hashedPassword = await this.passwordHasherAdapter.execute(data.password);
 
