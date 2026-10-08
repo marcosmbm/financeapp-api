@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import bcrypt from "bcryptjs";
+import type { IPasswordHasherAdapter } from "@/adapters";
 import type { ICreateUserRepository, IGetUserByEmailRepository } from "@/repositories";
 
 export interface ICreateUserUseCaseInput {
@@ -23,13 +23,16 @@ export interface ICreateUserUseCase {
 export class CreateUserUseCase implements ICreateUserUseCase {
   private readonly createUserRepository: ICreateUserRepository;
   private readonly getUserByEmailRepository: IGetUserByEmailRepository;
+  private readonly passwordHasherAdapter: IPasswordHasherAdapter;
 
   constructor(
     createUserRepository: ICreateUserRepository,
     getUserByEmailRepository: IGetUserByEmailRepository,
+    passwordHasherAdapter: IPasswordHasherAdapter,
   ) {
     this.createUserRepository = createUserRepository;
     this.getUserByEmailRepository = getUserByEmailRepository;
+    this.passwordHasherAdapter = passwordHasherAdapter;
   }
 
   async execute(data: ICreateUserUseCaseInput): Promise<ICreateUserUseCaseOutput> {
@@ -43,7 +46,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
 
     const userId = crypto.randomUUID();
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const hashedPassword = await this.passwordHasherAdapter.execute(data.password);
 
     return await this.createUserRepository.execute({
       id: userId,
