@@ -1,4 +1,5 @@
 import type { IIdGeneratorAdapter, IPasswordHasherAdapter } from "@/adapters";
+import { EmailAlreadyInUserError } from "@/errors";
 import type { ICreateUserRepository, IGetUserByEmailRepository } from "@/repositories";
 
 export interface ICreateUserUseCaseInput {
@@ -43,7 +44,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
     });
 
     if (userAlreadyExists) {
-      throw new Error(`this email ${data.email} is already in use`);
+      throw new EmailAlreadyInUserError(data.email);
     }
 
     const userId = this.idGeneratorAdapter.execute();
