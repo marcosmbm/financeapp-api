@@ -1,5 +1,7 @@
 import type { Request } from "express";
+import { ZodError } from "zod";
 import { DefaultError } from "@/errors";
+import { createUserSchema } from "@/schemas";
 import type { ICreateUserUseCase } from "@/use-cases";
 
 export class CreateUserController {
@@ -11,7 +13,10 @@ export class CreateUserController {
 
   async execute(req: Request) {
     try {
-      const data = req.body;
+      const params = req.body;
+
+      const data = await createUserSchema.parseAsync(params);
+
       const user = await this.createUserUseCase.execute(data);
 
       return {
@@ -19,7 +24,14 @@ export class CreateUserController {
         body: user,
       };
     } catch (error: unknown) {
-      if (error instanceof DefaultError) {
+      if (error instanceof ZodError) {
+        return {
+          statusCode: 400,
+          body: {
+            message: error.issues[0].message,
+          },
+        };
+      } else if (error instanceof DefaultError) {
         return {
           statusCode: error.statusCode,
           body: {
