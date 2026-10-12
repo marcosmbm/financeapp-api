@@ -7,3 +7,11 @@ export class EmailAlreadyInUserError extends DefaultError {
     this.statusCode = 409;
   }
 }
+
+export class UserNotFoundError extends DefaultError {
+  constructor(userId: string) {
+    super(`User with id ${userId} not found`);
+    this.name = "UserNotFoundError";
+    this.statusCode = 404;
+  }
+}
