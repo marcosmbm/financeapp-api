@@ -23,3 +23,9 @@ export const createUserSchema = z.strictObject({
 });
 
 export type CreateUserSchema = z.infer<typeof createUserSchema>;
+
+export const getUserByIdSchema = z.strictObject({
+  id: z.uuid({ error: "The provided id is not valid." }),
+});
+
+export type GetUserByIdSchema = z.infer<typeof getUserByIdSchema>;

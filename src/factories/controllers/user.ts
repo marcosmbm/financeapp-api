@@ -1,10 +1,11 @@
 import { IdGeneratorAdapter, PasswordHasherAdapter } from "@/adapters";
-import { CreateUserController } from "@/controllers";
+import { CreateUserController, GetUserByIdController } from "@/controllers";
 import {
   PostgresCreateUserRepository,
   PostgresGetUserByEmailRepository,
+  PostgresGetUserByIdRepository,
 } from "@/repositories";
-import { CreateUserUseCase } from "@/use-cases";
+import { CreateUserUseCase, GetUserByIdUseCase } from "@/use-cases";
 
 export function makeCreateUserController() {
   const createUserRepository = new PostgresCreateUserRepository();
@@ -21,4 +22,13 @@ export function makeCreateUserController() {
 
   const createUserController = new CreateUserController(createUserUseCase);
   return createUserController;
+}
+
+export function makeGetUserByIdController() {
+  const getUserByIdRepository = new PostgresGetUserByIdRepository();
+
+  const getUserByIdUseCase = new GetUserByIdUseCase(getUserByIdRepository);
+
+  const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
+  return getUserByIdController;
 }
